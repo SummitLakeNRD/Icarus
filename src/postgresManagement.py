@@ -26,7 +26,7 @@ class postgresManagement:
                 cur.execute(
                     """SELECT COUNT(*) FROM 
                     <TABLE_NAME>;""")
-                row_count = cur.fetchall()
+                row_count = cur.fetchall()[0][0]
         return row_count
 
 
@@ -49,4 +49,4 @@ class postgresManagement:
                 cur.execute(
                     """SELECT COUNT(*) FROM 
                     <TABLE_NAME> WHERE Site_Name = self""")
-                row_count = cur.fetchall()
+                row_count = cur.fetchall()[0][0]
