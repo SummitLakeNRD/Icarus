@@ -32,6 +32,9 @@ class postgresManagement:
         return row_count
 
     def appendNewEntries(self, bird_list):
+        # List comprehension to add site name to end of list tuples
+        bird_list = [tuple(list(element) + [self.site_name]) for element in bird_list]
+
         # Create connection to Postgres DB
         with psycopg.connect(
             dbname = self.dbname,
@@ -46,15 +49,16 @@ class postgresManagement:
                 # Execute SQL command and store values
                 cur.executemany(
                     """INSERT INTO <TABLE_NAME> 
-                    (uuid, Date, Time, Sci_Name, Com_Name, Confidence,
+                    (Date, Time, Sci_Name, Com_Name, Confidence,
                      Lat, Lon, Cutoff, Week, Sens, Overlap, Site_Name) VALUES 
                     (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
-                    uuid4(), bird_list[0], bird_list[1], bird_list[2],
-                    bird_list[3], bird_list[4], bird_list[5], bird_list[6],
-                    bird_list[7], bird_list[8], bird_list[9], bird_list[10], 
-                    bird_list[11], self.site_name)
+                    bird_list)
+                
+            # Commit changes 
+            conn.commit()    
                 
             # Close postgres connection    
+            cur.close()
             conn.close()
 
  

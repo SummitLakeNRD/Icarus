@@ -1,4 +1,5 @@
 import os
+import sys
 import sqlite3
 from paramiko import SSHClient
 from scp import SCPClient
@@ -43,13 +44,16 @@ class remoteFetch:
     
     def DBQuery(self, currentDB_length, updatedDB_length):
         query_length = updatedDB_length - currentDB_length
-        con = sqlite3.connect(os.path.join(os.getcwd(), 'src', self.site_name + 
-                                           '_' + 'birds.db'))
-        cur = con.cursor()
-        res = cur.execute("""SELECT Date, Date, Time, Sci_Name, Com_Name, 
-                          Confidence, Lat, Lon, Cutoff, Week, Sens, Overlap
-                          FROM detections ORDER BY rowid DESC LIMIT ?""", 
-                          [query_length]).fetchall()
-        con.close()
-        # Note cannot use .reverse() method as list may be too large
-        return res[::-1]
+        if query_length == 0:
+            sys.exit()
+        else:
+            con = sqlite3.connect(os.path.join(os.getcwd(), 'src', self.site_name + 
+                                               '_' + 'birds.db'))
+            cur = con.cursor()
+            res = cur.execute("""SELECT Date, Time, Sci_Name, Com_Name, 
+                              Confidence, Lat, Lon, Cutoff, Week, Sens, Overlap
+                              FROM detections ORDER BY rowid DESC LIMIT ?""", 
+                              [query_length]).fetchall()
+            con.close()
+            # Note cannot use .reverse() method as list may be too large
+            return res[::-1]
