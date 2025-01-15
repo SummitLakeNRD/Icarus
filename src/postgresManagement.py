@@ -4,10 +4,10 @@ from uuid import uuid4
 class postgresManagement:
     def __init__(self, dbname, user, password, host, port, site_name):
         # Enter PostgreSQL database information here
-        self.dbname = dbname,
-        self.user = user,
-        self.password = password,
-        self.host = host,
+        self.dbname = dbname
+        self.user = user
+        self.password = password
+        self.host = host
         self.port = port
         self.site_name = site_name
 

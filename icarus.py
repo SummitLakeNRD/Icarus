@@ -12,8 +12,9 @@ def main():
     parser.add_argument('site_name', type=str, help='BirdNET station site name')
     args = parser.parse_args()
 
-    # Pass in PostgreSQL database information to establish connection
-    postgres = postgresManagement("<DBNAME>", "<USER>", "<PASSWORD", 
+    # Pass in PostgreSQL database information to establish connectioni
+    # Will need to pass in DB specific values
+    postgres = postgresManagement("<DBNAME>", "<USER>", "<PASSWORD>", 
                                   "<HOST>", "<PORT>", "<SITE>")
     # Pass in sqlite3 db parameters from CLI arguments
     remote = remoteFetch(args.host, args.user, args.password,
@@ -21,10 +22,11 @@ def main():
 
     remote.retrieveDBFile()
     new_entry_length = remote.remoteDBlegnth()
-    db_length = postgres.currentDBLength()
-    #db_length = 3400 # For testing
+    #db_length = postgres.currentDBLength()
+    db_length = 3400 # For testing
     new_append_list = remote.DBQuery(db_length, new_entry_length)
-    postgres.appendNewEntries(new_append_list)
+    print(new_append_list[0])
+    #postgres.appendNewEntries(new_append_list)
 
     
 if __name__ == '__main__':
